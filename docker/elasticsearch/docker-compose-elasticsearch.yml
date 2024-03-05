@@ -1,0 +1,43 @@
+version: "3.7"
+services:
+  yh-es01:
+    image: docker.elastic.co/elasticsearch/elasticsearch:${VERSION}
+    container_name: yh-es01
+    environment:
+      ES_JAVA_OPTS: "-Xms4G -Xmx4G" 
+      ELASTIC_USER: ${ELASTIC_USER}
+      ELASTIC_PASSWORD: ${ELASTIC_PASSWORD}
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nproc:
+        soft: 1024000
+        hard: 1024000
+      nofile:
+        soft: 1024000
+        hard: 1024000
+    volumes:
+      - type: bind
+        source: ${PWD}/elasticsearch/config/elasticsearch.yml
+        target: /usr/share/elasticsearch/config/elasticsearch.yml
+        read_only: true
+      - ${PWD}/elasticsearch/data/es01:/usr/share/elasticsearch/data:rw
+      - ${PWD}/elasticsearch/data/es01:/usr/share/elasticsearch/logs:rw
+      - ${PWD}/elasticsearch/backup:/usr/share/elasticsearch/backup:rw
+    ports:
+      - 9200:9200
+      - 9300:9300
+    restart: always
+    networks:
+      - elastic
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1024m"
+        max-file: "5"
+
+networks:
+  elastic:
+    name: yh-elastic
+    driver: bridge

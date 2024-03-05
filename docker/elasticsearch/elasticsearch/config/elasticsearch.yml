@@ -1,0 +1,19 @@
+## Default Elasticsearch configuration
+node.name: yh-es01
+cluster.name: yh-es-single-node
+discovery.type: single-node
+discovery.seed_hosts: yh-es01
+network.host: 0.0.0.0
+http.compression: true
+path.data: /usr/share/elasticsearch/data
+path.logs: /usr/share/elasticsearch/logs
+path.repo: /usr/share/elasticsearch/backup
+bootstrap.memory_lock: true
+
+## Search Settings
+search.max_buckets: 1000000
+
+## X-Pack Security Settings
+xpack.security.enabled: true
+
+indices.breaker.total.limit: 80%

@@ -1,0 +1,10 @@
+## Default Kibana configuration
+server.name: kibana
+server.host: 0.0.0.0
+data.autocomplete.valueSuggestions.timeout: 100000
+data.autocomplete.valueSuggestions.terminateAfter: 10000000
+
+## X-Pack security credentials
+xpack.security.enabled: true
+xpack.monitoring.collection.enabled: true
+xpack.monitoring.ui.container.elasticsearch.enabled: true

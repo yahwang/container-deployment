@@ -1,0 +1,34 @@
+version: "3.7"
+services:
+  yh-filebeat:
+    image: docker.elastic.co/beats/filebeat:${VERSION}
+    container_name: yh-filebeat
+    user: root
+    environment:
+      ELASTICSEARCH_HOSTS: '["http://yh-es01:9200"]'
+      KIBANA_HOSTS: '"http://yh-kibana:5601"'
+      ELASTICSEARCH_USERNAME: ${ELASTIC_USER}
+      ELASTICSEARCH_PASSWORD: ${ELASTIC_PASSWORD}
+    volumes:
+      - type: bind
+        source: ${PWD}/filebeat/config/filebeat.yml
+        target: /usr/share/filebeat/filebeat.yml
+        read_only: true
+      - type: bind
+        source: /var/lib/docker
+        target: /usr/share/filebeat/docker/
+        read_only: true
+    command: ["--strict.perms=false"]
+    restart: always
+    networks:
+      - elastic
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"
+        max-file: "5"
+
+networks:
+  elastic:
+    name: yh-elastic
+    driver: bridge

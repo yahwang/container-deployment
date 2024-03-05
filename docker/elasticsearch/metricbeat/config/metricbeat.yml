@@ -1,0 +1,21 @@
+logging.level: info
+logging.to_stderr: true
+
+output.elasticsearch:
+  hosts: '${ELASTICSEARCH_HOSTS}'
+  username: '${ELASTICSEARCH_USERNAME}'
+  password: '${ELASTICSEARCH_PASSWORD}'
+
+metricbeat.modules:
+- module: elasticsearch
+  xpack.enabled: true
+  period: 10s
+  hosts: '${ELASTICSEARCH_HOSTS}'
+  username: '${ELASTICSEARCH_USERNAME}'
+  password: '${ELASTICSEARCH_PASSWORD}'
+- module: kibana
+  xpack.enabled: true
+  period: 10s
+  hosts: '${KIBANA_HOSTS}'
+  username: '${ELASTICSEARCH_USERNAME}'
+  password: '${ELASTICSEARCH_PASSWORD}'

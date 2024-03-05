@@ -1,0 +1,30 @@
+version: "3.7"
+services:
+  yh-kibana:
+    image: docker.elastic.co/kibana/kibana:${VERSION}
+    container_name: yh-kibana
+    environment:
+      ELASTICSEARCH_HOSTS: '["http://yh-es01:9200"]'
+      ELASTICSEARCH_USERNAME: ${ELASTIC_USER}
+      ELASTICSEARCH_PASSWORD: ${ELASTIC_PASSWORD}
+    ports:
+      - 5601:5601
+    volumes:
+      - type: bind
+        source: ${PWD}/kibana/config/kibana.yml
+        target: /usr/share/kibana/config/kibana.yml
+        read_only: true
+    mem_limit: 1.5g
+    restart: always
+    networks:
+      - elastic
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"
+        max-file: "5"
+
+networks:
+  elastic:
+    name: yh-elastic
+    driver: bridge

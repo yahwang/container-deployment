@@ -1,0 +1,25 @@
+filebeat.inputs:
+- type: container
+  paths: 
+    - '/usr/share/filebeat/docker/containers/9d424773d6e*/*.log'
+  json.add_error_key: true
+  json.message_key: message
+  
+processors:
+- drop_event:
+    when:
+      not:
+        regexp:
+          json.type: "index_search_slowlog"
+
+setup.kibana:
+  host: '${KIBANA_HOSTS}'
+
+setup.dashboards.enabled: true
+
+output.elasticsearch:
+  hosts: '${ELASTICSEARCH_HOSTS}'
+  username: '${ELASTICSEARCH_USERNAME}'
+  password: '${ELASTICSEARCH_PASSWORD}'
+
+logging.level: debug
